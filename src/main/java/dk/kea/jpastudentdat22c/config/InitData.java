@@ -23,8 +23,8 @@ public class InitData implements CommandLineRunner {
         s1.setBornTime(LocalTime.of(23, 59, 59));
 
         studentRepository.save(s1);
-        s1.setName("kurt");
+        /*s1.setName("kurt");
         studentRepository.save(s1);
-        studentRepository.save(s1);
+        studentRepository.save(s1);*/
     }
 }
