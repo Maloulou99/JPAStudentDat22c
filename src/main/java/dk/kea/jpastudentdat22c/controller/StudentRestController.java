@@ -19,23 +19,33 @@ public class StudentRestController {
     @GetMapping("/students")
     public List<Student> getAllStudents(){
        List<Student> lst = studentRepository.findAll();
-
        return lst;
-
     }
 
     @PostMapping("/student")
     @ResponseStatus(HttpStatus.CREATED)
     public Student postStudent(@RequestBody Student student){
+        student.setId(0); //sikr at ny student oprettes - undgå overskrivning af eksisterende
         System.out.println(student);
         return studentRepository.save(student);
+    }
+
+    @GetMapping("/student/{id}")
+    public ResponseEntity<Student> getStudentById(@PathVariable("id") int id){
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()){
+            return ResponseEntity.ok(optionalStudent.get());
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/student/{id}")
     public ResponseEntity<Student> putStudent(@PathVariable("id") int id, @RequestBody Student student){
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()){
-            student.setId(id);
+            student.setId(id); //sikr at id fra path bruges til update
             studentRepository.save(student);
             //return new ResponseEntity<>(student, HttpStatus.OK);
             return ResponseEntity.ok(student);
@@ -45,6 +55,8 @@ public class StudentRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
     @DeleteMapping("/student/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable("id") int id){

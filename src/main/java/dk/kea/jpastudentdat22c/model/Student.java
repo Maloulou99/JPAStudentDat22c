@@ -58,4 +58,14 @@ public class Student {
     public void setBornTime(LocalTime bornTime) {
         this.bornTime = bornTime;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", bornDate=" + bornDate +
+                ", bornTime=" + bornTime +
+                '}';
+    }
 }
