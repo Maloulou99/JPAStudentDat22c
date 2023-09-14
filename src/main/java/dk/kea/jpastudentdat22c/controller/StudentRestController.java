@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+//@CrossOrigin
 @RestController
 public class StudentRestController {
 
@@ -55,8 +56,6 @@ public class StudentRestController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
 
     @DeleteMapping("/student/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable("id") int id){
