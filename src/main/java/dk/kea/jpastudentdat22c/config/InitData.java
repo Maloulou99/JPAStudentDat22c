@@ -13,7 +13,7 @@ import java.time.LocalTime;
 public class InitData implements CommandLineRunner {
 
     @Autowired
-    StudentRepository studentRepository;
+    StudentRepository studentService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -22,7 +22,7 @@ public class InitData implements CommandLineRunner {
         s1.setBornDate(LocalDate.of(2010,11,12));
         s1.setBornTime(LocalTime.of(23, 59, 59));
 
-        studentRepository.save(s1);
+        studentService.save(s1);
         /*s1.setName("kurt");
         studentRepository.save(s1);
         studentRepository.save(s1);*/

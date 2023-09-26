@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class StudentRestControllerTest {
 
     @Autowired
-    StudentRepository studentRepository;
+    StudentRepository studentService;
 
     @Test
     void testOneTime(){
-        List<Student> lst = studentRepository.findAllByName("kurt");
+        List<Student> lst = studentService.findAllByName("kurt");
         assertEquals(1, lst.size());
     }
 
