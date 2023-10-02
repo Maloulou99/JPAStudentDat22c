@@ -18,6 +18,7 @@ public class InitData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Student s1 = new Student();
+        s1.setId(1);
         s1.setName("Sigurd");
         s1.setBornDate(LocalDate.of(2010,11,12));
         s1.setBornTime(LocalTime.of(23, 59, 59));

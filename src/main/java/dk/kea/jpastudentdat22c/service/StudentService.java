@@ -14,66 +14,62 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    private final StudentRepository studentService;
+    private final StudentRepository studentRepository;
     private final StudentConverter studentConverter;
 
     @Autowired
-    public StudentService(StudentRepository studentService,
-                          StudentConverter studentConverter){
-        this.studentService = studentService;
+    public StudentService(
+            StudentRepository studentRepository,
+            StudentConverter studentConverter
+    ){
+        this.studentRepository = studentRepository;
         this.studentConverter = studentConverter;
-
     }
 
     public List<StudentDTO> getAllStudents(){
-        List<Student> students = studentService.findAll();
-        return  students.stream()
+        List<Student> students = studentRepository.findAll();
+        return students.stream()
                 .map(studentConverter::toDTO)
                 .collect(Collectors.toList());
     }
 
     public StudentDTO getStudentById(int id){
-        Optional<Student> studentOptional = studentService.findById(id);
-        if (studentOptional.isPresent()){
-            return studentConverter.toDTO(studentOptional.get());
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()){
+            return studentConverter.toDTO(optionalStudent.get());
         } else {
-            throw new StudentNotFoundExeption("Student not found by id: " + id);
-
+            throw new StudentNotFoundExeption("Student not found with id: " + id);
         }
     }
 
-
     public StudentDTO createStudent(StudentDTO studentDTO){
         Student studentToSave = studentConverter.toEntity(studentDTO);
-        // Sæt ID til 0
+        //ensure it's a create
         studentToSave.setId(0);
-        // Gem studentToSave i studentRepository
-        Student savedStudent = studentService.save(studentToSave);
+        Student savedStudent = studentRepository.save(studentToSave);
         return studentConverter.toDTO(savedStudent);
     }
 
 
     public StudentDTO updateStudent(int id, StudentDTO studentDTO){
-        Optional<Student> existingStudent = studentService.findById(id);
+        Optional<Student> existingStudent = studentRepository.findById(id);
         if (existingStudent.isPresent()){
             Student studentToUpdate = studentConverter.toEntity(studentDTO);
-            //Ensure it's the id from the path that is updated
+            //ensure it's the id from the path that is updated
             studentToUpdate.setId(id);
-            Student savedStudent = studentService.save(studentToUpdate);
+            Student savedStudent = studentRepository.save(studentToUpdate);
             return studentConverter.toDTO(savedStudent);
         } else {
-            throw new StudentNotFoundExeption("Student not found by id: " + id);
+            throw new StudentNotFoundExeption("Student not found with id: " + id);
         }
     }
 
     public void deleteStudentById(int id){
-        Optional<Student> studentOptional = studentService.findById(id);
-        if (studentOptional.isPresent()){
-            studentService.deleteById(id);
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent()){
+            studentRepository.deleteById(id);
         } else {
-            throw new StudentNotFoundExeption("Student not found by id: " + id);
+            throw new StudentNotFoundExeption("Student not found with id: " + id);
         }
     }
-
-
 }
